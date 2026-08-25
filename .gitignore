@@ -1,0 +1,23 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Android native project — regenerated fresh by the GitHub Actions
+# workflow on every build (see .github/workflows/build-apk.yml), so
+# it's intentionally NOT committed. This keeps the repo small and
+# avoids stale/broken native project state since you're not building
+# locally.
+android/
+ios/
+
+# Capacitor
+.capacitor/
+
+# OS/editor cruft
+.DS_Store
+*.log
+
+# Local photo output from the optional Python server (server.py)
+photos/*.jpg
+photos/*.jpeg
+photos/*.png

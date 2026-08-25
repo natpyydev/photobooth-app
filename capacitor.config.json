@@ -1,0 +1,9 @@
+{
+  "appId": "com.teamsteve.photobooth",
+  "appName": "Team Steve Photobooth",
+  "webDir": "www",
+  "backgroundColor": "#5FB6E8",
+  "android": {
+    "allowMixedContent": false
+  }
+}

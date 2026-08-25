@@ -1,0 +1,128 @@
+/* =====================================================
+   TEAM STEVE — GLOBAL / BASE STYLES
+   Lo-Fi Minecraft 16x16 pixel-art theme
+===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap');
+
+:root {
+    /* Minecraft-ish block palette */
+    --mc-grass-top:    #6ABE2E;
+    --mc-grass-dark:   #3F8F1E;
+    --mc-grass-shadow: #245212;
+
+    --mc-dirt:         #8B5A2B;
+    --mc-dirt-dark:    #5A3A1B;
+
+    --mc-stone:        #A8A8A8;
+    --mc-stone-light:  #D4D4D4;
+    --mc-stone-dark:   #6B6B6B;
+    --mc-stone-shadow: #454545;
+
+    --mc-wood:         #9C6B30;
+    --mc-wood-dark:    #6B4A20;
+
+    --mc-redstone:     #C22A1B;
+    --mc-redstone-dark:#7A1610;
+
+    --mc-sky-top:      #5FB6E8;
+    --mc-sky-bottom:   #A9E0F5;
+
+    --mc-panel:        #C6C6C6;
+    --mc-panel-dark:   #8B8B8B;
+    --mc-panel-shadow: #373737;
+
+    --mc-ink:          #2B2B2B;
+    --mc-cream:        #F5F0DC;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background: var(--mc-ink);
+    color: var(--mc-cream);
+    font-family: 'Silkscreen', 'Press Start 2P', monospace;
+    overflow-x: hidden;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* Keep the blocky, low-res look on every sprite/asset,
+   instead of smooth anti-aliased scaling. */
+img, video, canvas {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.app {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* =====================================================
+   SHARED PIXEL-BEVEL BUTTON/PANEL SYSTEM
+   Classic Minecraft GUI trick: hard square corners,
+   a lighter inset edge on the top/left and a darker
+   inset edge on the bottom/right to fake a raised
+   pixel bevel. Flips on press for a "pushed in" look.
+===================================================== */
+
+.pixel-border {
+    border: 3px solid var(--mc-panel-shadow);
+    box-shadow:
+        inset 3px 3px 0 0 rgba(255,255,255,.35),
+        inset -3px -3px 0 0 rgba(0,0,0,.35);
+    border-radius: 0;
+}
+
+.pixel-border:active {
+    box-shadow:
+        inset -3px -3px 0 0 rgba(255,255,255,.25),
+        inset 3px 3px 0 0 rgba(0,0,0,.35);
+}
+
+/* Simple scanline overlay for a retro-CRT touch */
+.app::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.05),
+        rgba(0,0,0,0.05) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    opacity: .3;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--mc-stone-dark);
+    border: 2px solid var(--mc-panel-shadow);
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Team Steve — Rube Goldberg Photobooth</title>
+
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/start.css">
+<link rel="stylesheet" href="css/tutorial.css">
+<link rel="stylesheet" href="css/photobooth.css">
+<link rel="stylesheet" href="css/result.css">
+
+<script src="js/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         PRESS START SCREEN
+         Nothing plays or starts until the player taps this —
+         it doubles as the required user-gesture that unlocks
+         audio autoplay (BGM + voice) on mobile browsers.
+    ====================================================== -->
+    <section id="startScreen" class="start-screen">
+
+        <div class="start-sky">
+            <div class="start-cloud c1"></div>
+            <div class="start-cloud c2"></div>
+            <div class="start-cloud c3"></div>
+        </div>
+
+        <div class="start-content">
+            <div class="start-title">
+                <span class="title-line title-line--outline">STEVE BALL RUN</span>
+                <span class="title-line title-line--sub">MINECRAFT PHOTOBOOTH</span>
+            </div>
+
+            <div class="start-subtitle">Team Steve — Rube Goldberg Project</div>
+
+            <button id="pressStartButton" class="press-start-button">
+                ▶ PRESS START
+            </button>
+
+            <div class="start-hint">tap to begin</div>
+        </div>
+
+        <div class="start-ground"></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TUTORIAL SCREEN (3 steps)
+    ====================================================== -->
+    <section id="tutorialScreen" class="tutorial-screen hidden">
+
+        <div class="tutorial-topbar">
+            <img class="tutorial-logo" src="Assets/Minecraft.png" alt="Minecraft">
+            <div class="progress-container">
+                <div id="progressStep1" class="progress-block"></div>
+                <div id="progressStep2" class="progress-block"></div>
+                <div id="progressStep3" class="progress-block"></div>
+            </div>
+            <button id="bgmButton" class="icon-button" title="I-mute/I-on ang music" aria-label="Toggle music">🎵</button>
+            <button id="muteButton" class="icon-button" title="I-mute/I-on ang boses" aria-label="Toggle voice">🔊</button>
+        </div>
+
+        <!-- STEP 1: MECHANICS & STAFF CHECK -->
+        <div id="step1" class="tutorial-step active">
+            <div class="step-badge">HAKBANG 1 / 3</div>
+            <div class="step-icon">⚙️💎</div>
+            <h1>Unawain ang Rube Goldberg Mechanics</h1>
+            <p class="tutorial-text">
+                Bago mo kalabitin ang syringe, siguraduhing tama ang posisyon ng mga gamit.
+                Kung umilaw ang End Crystal, ibig sabihin ay sablay ang setup — paki-tawag
+                agad ang Staff!
+            </p>
+
+            <div class="crystal-status">
+                <div id="crystalIndicator" class="crystal-indicator off">💎</div>
+                <div class="crystal-label">
+                    <strong>END CRYSTAL STATUS</strong>
+                    <span id="crystalText">LIGHT OFF — READY NA!</span>
+                </div>
+            </div>
+
+            <div class="instruction-box">
+                <p>🟢 <strong>LIGHT OFF</strong> → Maayos ang setup, pwede nang magpatuloy.</p>
+                <p>🔴 <strong>LIGHT ON</strong> → May sablay, tumawag agad ng Staff.</p>
+            </div>
+
+            <div id="staffAlarm" class="staff-alarm hidden">
+                🚨 CALL STAFF! NAG-AALARM ANG END CRYSTAL! 🚨
+            </div>
+
+            <div class="tutorial-buttons">
+                <button id="callStaffButton" class="tutorial-button secondary">📢 TUMAWAG NG STAFF</button>
+                <button id="proceedButton" class="tutorial-button primary">SUSUNOD →</button>
+            </div>
+
+            <button id="devToggleCrystal" class="dev-toggle" title="Demo lang — para sa staff testing">
+                🔧 (Staff demo) i-toggle ang Crystal status
+            </button>
+        </div>
+
+        <!-- STEP 2: CHOOSE FRAME -->
+        <div id="step2" class="tutorial-step">
+            <div class="step-badge">HAKBANG 2 / 3</div>
+            <div class="step-icon">🖼️</div>
+            <h1>Piliin ang iyong Team Steve Frame</h1>
+            <p class="tutorial-text">
+                Piliin mo na ang paborito mong Minecraft frame para hindi mukhang ewan
+                ang litrato mo. Dali na, pumili ka na!
+            </p>
+
+            <div class="frame-grid">
+                <button class="frame-option selected" data-frame="frame1.png">
+                    <img src="Assets/frames/frame1.png" alt="Frame 1">
+                </button>
+                <button class="frame-option" data-frame="frame2.png">
+                    <img src="Assets/frames/frame2.png" alt="Frame 2">
+                </button>
+                <button class="frame-option" data-frame="frame3.png">
+                    <img src="Assets/frames/frame3.png" alt="Frame 3">
+                </button>
+                <button class="frame-option" data-frame="frame4.png">
+                    <img src="Assets/frames/frame4.png" alt="Frame 4">
+                </button>
+            </div>
+
+            <div class="tutorial-buttons">
+                <button id="backToStep1" class="tutorial-button secondary">← BALIK</button>
+                <button id="nextFrameButton" class="tutorial-button primary">SUSUNOD →</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: ACTION & END CRYSTAL PROMPT -->
+        <div id="step3" class="tutorial-step">
+            <div class="step-badge">HAKBANG 3 / 3</div>
+            <div class="step-icon syringe-icon">💉</div>
+            <h1>Hawakan ang Syringe at Abangan ang End Crystal!</h1>
+            <p class="tutorial-text">
+                Hawakan na ang syringe at hilahin para bumagsak ang bola! At tandaan:
+                tumingin sa camera at mag-pose kapag umilaw na ang End Crystal!
+            </p>
+
+            <div class="pull-guide">
+                <div class="syringe-anim">💉</div>
+                <div class="arrow-guide">← HILAHIN</div>
+            </div>
+
+            <div class="instruction-box">
+                <p>Pagkatapos hilahin, <strong>bitawan na</strong> at huwag nang galawin ang machine.</p>
+                <p>👀 Panoorin ang <strong>End Crystal</strong> — 'yan ang senyales para mag-pose!</p>
+            </div>
+
+            <div class="tutorial-buttons">
+                <button id="backToStep2" class="tutorial-button secondary">← BALIK</button>
+                <button id="armButton" class="tutorial-button primary glow">ARMADO NA! PUMUNTA SA CAMERA →</button>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CAMERA & TRIGGER SCREEN
+
+         All decorative PNGs (Blue-sky, Cloud, portal-grass,
+         steve-ball-run, Minecraft, photobooth, take-photo,
+         press-space) share the exact same 2160x3840 (9:16)
+         canvas, so they stack as full-size absolute layers
+         inside one "stage" and naturally line up together.
+    ====================================================== -->
+    <section id="photoboothScreen" class="photobooth-screen hidden">
+        <div class="stage" id="stage">
+
+            <img class="layer" src="Assets/Blue-sky.png" alt="">
+            <img class="layer" src="Assets/Cloud.png" alt="">
+            <img class="layer" src="Assets/portal-grass.png" alt="">
+            <img class="layer" src="Assets/steve-ball-run.png" alt="">
+            <img class="layer" src="Assets/Minecraft.png" alt="">
+            <img class="layer" src="Assets/photobooth.png" alt="">
+
+            <!-- Live camera + selectable frame, aligned to
+                 portal-grass.png's built-in window cutout -->
+            <div class="camera-window" id="cameraWindow">
+                <video id="camera" autoplay playsinline muted></video>
+                <img id="frameOverlay" class="frame-overlay" src="Assets/frames/frame1.png" alt="">
+                <div id="countdown" class="countdown"></div>
+                <div id="flash" class="flash"></div>
+            </div>
+
+            <div id="signalStatus" class="signal-status">
+                <div class="pulse-dot"></div>
+                <span id="signalStatusText">🎮 NAGHIHINTAY NG SIGNAL...</span>
+            </div>
+
+            <img class="layer" src="Assets/press-space.png" alt="">
+            <img class="layer" src="Assets/take-photo.png" alt="">
+
+            <!-- Invisible tap target sitting exactly on top of
+                 the baked-in take-photo.png artwork above
+                 (measured bbox: left 16.4%, top 84.2%,
+                 width 69.9%, height 4.7% of the stage) -->
+            <button id="testTriggerButton" class="take-photo-hit-area" aria-label="Kunan ng Litrato"></button>
+
+            <div id="keyDebug" class="key-debug hidden">
+                Last key: <span id="keyDebugText">—</span>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         RESULT / PREVIEW + QR
+    ====================================================== -->
+    <section id="resultSection" class="result-section hidden">
+
+        <h2>📸 KUHA NA ANG LITRATO!</h2>
+
+        <div class="result-image-frame">
+            <img id="resultImage" class="result-image" alt="Final Photo">
+        </div>
+
+        <div class="qr-card">
+            <h3>I-SCAN PARA I-DOWNLOAD</h3>
+            <div id="qrcode" class="qrcode"></div>
+            <p id="qrStatus">Ginagawa ang QR...</p>
+        </div>
+
+        <div class="result-buttons">
+            <button id="downloadButton">⬇️ I-DOWNLOAD ANG LITRATO</button>
+            <button id="newPhotoButton">🔁 KUMUHA ULIT</button>
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- Continuous background music — loops forever once
+     started by the Press Start tap; never paused by
+     voice lines or SFX (see js/bgm.js) -->
+<audio id="bgmAudio" src="Assets/sounds/bgm.mp3" loop preload="auto"></audio>
+
+<!-- Optional local sound effect (used for the countdown tick if the file loads) -->
+<audio id="countdownAudio" src="Assets/sounds/countdown.mp3" preload="auto"></audio>
+
+<script src="js/bgm.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/sfx.js"></script>
+<script src="js/frames.js"></script>
+<script src="js/qr.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/tutorial.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

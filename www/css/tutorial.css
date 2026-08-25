@@ -1,0 +1,404 @@
+/* =====================================================
+   TUTORIAL SCREEN — Lo-Fi Minecraft pixel UI
+===================================================== */
+
+.tutorial-screen {
+    width: 100%;
+    min-height: 100svh;
+    padding: 16px 14px 40px;
+    background: linear-gradient(to bottom, var(--mc-sky-top) 0%, var(--mc-sky-bottom) 55%, #cdeab0 100%);
+    color: var(--mc-ink);
+    text-align: center;
+    position: relative;
+}
+
+/* =====================================================
+   TOP BAR: logo + segmented progress + icon buttons
+===================================================== */
+
+.tutorial-topbar {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tutorial-logo {
+    height: 28px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(2px 2px 0 #000);
+}
+
+.progress-container {
+    flex: 1;
+    display: flex;
+    gap: 4px;
+    height: 16px;
+}
+
+.progress-block {
+    flex: 1;
+    background: var(--mc-stone-dark);
+    border: 2px solid var(--mc-ink);
+    box-shadow: inset -2px -2px 0 0 rgba(0,0,0,.3);
+}
+
+.progress-block.filled {
+    background: var(--mc-grass-top);
+    box-shadow: inset -2px -2px 0 0 var(--mc-grass-shadow), inset 2px 2px 0 0 rgba(255,255,255,.4);
+}
+
+.icon-button {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    background: var(--mc-panel);
+    border: 2px solid var(--mc-ink);
+    box-shadow: inset -2px -2px 0 0 rgba(0,0,0,.35), inset 2px 2px 0 0 rgba(255,255,255,.5);
+    font-size: 15px;
+    color: #fff;
+}
+
+.icon-button:active {
+    box-shadow: inset 2px 2px 0 0 rgba(0,0,0,.35);
+}
+
+.icon-button.muted {
+    background: var(--mc-redstone);
+}
+
+/* =====================================================
+   STEP PANEL (stone dialog box)
+===================================================== */
+
+.tutorial-step {
+    display: none;
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+    padding: 20px 16px;
+    background: var(--mc-panel);
+    border: 4px solid var(--mc-ink);
+    box-shadow:
+        inset 4px 4px 0 0 rgba(255,255,255,.5),
+        inset -4px -4px 0 0 rgba(0,0,0,.3),
+        6px 6px 0 0 rgba(0,0,0,.35);
+    animation: stepIn .25s steps(3);
+}
+
+.tutorial-step.active {
+    display: block;
+}
+
+@keyframes stepIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.step-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    background: var(--mc-grass-top);
+    border: 2px solid var(--mc-ink);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #fff;
+    text-shadow: 1px 1px 0 var(--mc-grass-shadow);
+    margin-bottom: 12px;
+}
+
+.step-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,.3));
+}
+
+.syringe-icon {
+    animation: syringeFloat 1.4s steps(6) infinite alternate;
+}
+
+@keyframes syringeFloat {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-6px); }
+}
+
+.tutorial-step h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(13px, 4.4vw, 18px);
+    color: var(--mc-ink);
+    line-height: 1.6;
+    margin-bottom: 14px;
+    text-shadow: 1px 1px 0 rgba(255,255,255,.4);
+}
+
+.tutorial-text {
+    font-size: clamp(13px, 3.6vw, 15px);
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+/* =====================================================
+   INSET PANELS (crystal status / instructions / pull guide)
+===================================================== */
+
+.crystal-status,
+.instruction-box,
+.pull-guide {
+    max-width: 440px;
+    margin: 0 auto 14px;
+    background: var(--mc-stone-light);
+    border: 3px solid var(--mc-ink);
+    box-shadow: inset 3px 3px 0 0 rgba(255,255,255,.5), inset -3px -3px 0 0 rgba(0,0,0,.15);
+}
+
+.crystal-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px;
+}
+
+.crystal-indicator {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    background: var(--mc-stone);
+    border: 2px solid var(--mc-ink);
+    flex-shrink: 0;
+}
+
+.crystal-indicator.off {
+    background: #cdeecb;
+    border-color: var(--mc-grass-shadow);
+}
+
+.crystal-indicator.on {
+    background: #ffb3ab;
+    border-color: var(--mc-redstone);
+    animation: crystalBlink .5s steps(2) infinite alternate;
+}
+
+@keyframes crystalBlink {
+    from { box-shadow: 0 0 0 0 rgba(194,42,27,.6); }
+    to   { box-shadow: 0 0 0 6px rgba(194,42,27,.25); }
+}
+
+.crystal-label {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 11px;
+}
+
+.crystal-label strong {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    letter-spacing: .5px;
+    color: var(--mc-grass-shadow);
+}
+
+#crystalText {
+    color: #333;
+}
+
+.instruction-box {
+    padding: 12px 14px;
+    font-size: 13px;
+    text-align: left;
+    line-height: 1.7;
+    color: #333;
+}
+
+.instruction-box p + p {
+    margin-top: 6px;
+}
+
+.staff-alarm {
+    max-width: 440px;
+    margin: 0 auto 14px;
+    padding: 14px;
+    background: var(--mc-redstone);
+    border: 3px solid var(--mc-ink);
+    box-shadow: inset 3px 3px 0 0 rgba(255,255,255,.3), inset -3px -3px 0 0 rgba(0,0,0,.3);
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(9px, 2.6vw, 11px);
+    line-height: 1.8;
+    color: #fff;
+    text-shadow: 1px 1px 0 var(--mc-redstone-dark);
+    animation: alarmPulse .45s steps(2) infinite alternate;
+}
+
+@keyframes alarmPulse {
+    from { background: var(--mc-redstone); }
+    to   { background: #e0392a; }
+}
+
+/* =====================================================
+   BUTTONS — chunky Minecraft menu buttons
+===================================================== */
+
+.tutorial-buttons {
+    width: 100%;
+    max-width: 440px;
+    margin: 6px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tutorial-button {
+    width: 100%;
+    padding: 15px 16px;
+    background: var(--mc-grass-top);
+    border: 3px solid var(--mc-ink);
+    box-shadow:
+        inset 3px 3px 0 0 rgba(255,255,255,.45),
+        inset -3px -3px 0 0 rgba(0,0,0,.3);
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(10px, 3vw, 12px);
+    color: #fff;
+    letter-spacing: .5px;
+    text-shadow: 2px 2px 0 var(--mc-grass-shadow);
+}
+
+.tutorial-button:active {
+    transform: translate(2px, 2px);
+    box-shadow:
+        inset -3px -3px 0 0 rgba(255,255,255,.25),
+        inset 3px 3px 0 0 rgba(0,0,0,.3);
+}
+
+.tutorial-button:disabled {
+    background: var(--mc-stone-dark);
+    color: #bbb;
+    text-shadow: none;
+    box-shadow: inset 3px 3px 0 0 rgba(255,255,255,.15), inset -3px -3px 0 0 rgba(0,0,0,.3);
+    cursor: not-allowed;
+}
+
+.tutorial-button.secondary {
+    background: var(--mc-panel);
+    text-shadow: 2px 2px 0 var(--mc-panel-shadow);
+}
+
+.tutorial-button.glow {
+    background: #4FA6D8;
+    text-shadow: 2px 2px 0 #2A6488;
+    animation: glowPulse 1s steps(2) infinite alternate;
+}
+
+@keyframes glowPulse {
+    from { background: #4FA6D8; }
+    to   { background: #6BBEEA; }
+}
+
+.dev-toggle {
+    display: block;
+    margin: 16px auto 0;
+    padding: 6px 10px;
+    background: transparent;
+    border: 1px dashed var(--mc-stone-dark);
+    color: #555;
+    font-size: 10px;
+}
+
+/* =====================================================
+   FRAME SELECTION (Step 2)
+===================================================== */
+
+.frame-grid {
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.frame-option {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    padding: 0;
+    overflow: hidden;
+    background: var(--mc-stone);
+    border: 3px solid var(--mc-ink);
+    box-shadow: inset 2px 2px 0 0 rgba(255,255,255,.4), inset -2px -2px 0 0 rgba(0,0,0,.3);
+}
+
+.frame-option img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.frame-option:active {
+    transform: translate(1px, 1px);
+}
+
+.frame-option.selected {
+    border-color: var(--mc-grass-top);
+    box-shadow: 0 0 0 3px var(--mc-grass-shadow), inset 2px 2px 0 0 rgba(255,255,255,.4);
+}
+
+.frame-option.selected::after {
+    content: "✓";
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mc-grass-top);
+    border: 2px solid var(--mc-ink);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+/* =====================================================
+   STEP 3 — PULL GUIDE
+===================================================== */
+
+.pull-guide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px;
+}
+
+.syringe-anim {
+    font-size: 46px;
+    animation: syringeFloat 1.4s steps(6) infinite alternate;
+}
+
+.arrow-guide {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: var(--mc-dirt-dark);
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 480px) {
+    .tutorial-screen { padding: 12px 10px 36px; }
+    .tutorial-buttons { max-width: 100%; }
+    .frame-grid { max-width: 100%; }
+    .tutorial-step { padding: 16px 12px; }
+}

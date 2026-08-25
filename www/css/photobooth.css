@@ -1,0 +1,262 @@
+/* =====================================================
+   CAMERA & TRIGGER SCREEN
+
+   All decorative PNGs share one 2160x3840 (9:16) canvas,
+   so the whole screen is built as a single "stage" box
+   holding full-size absolute layers that all line up
+   automatically — no per-image position guessing needed.
+===================================================== */
+
+.photobooth-screen {
+    width: 100%;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background: linear-gradient(to bottom, var(--mc-sky-top) 0%, var(--mc-sky-bottom) 55%, #cdeab0 100%);
+}
+
+/* The 9:16 stage.
+   padding-bottom trick is used instead of the CSS
+   "aspect-ratio" property for maximum compatibility
+   with older/embedded WebViews (e.g. code-editor
+   preview panes) that may not support aspect-ratio. */
+
+.stage {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    height: 0;
+    padding-bottom: 177.78%; /* 3840 / 2160 * 100 */
+    border-radius: 0;
+    overflow: hidden;
+    background: #4a90d9;
+    border: 4px solid var(--mc-ink);
+    box-shadow:
+        inset 4px 4px 0 0 rgba(255,255,255,.35),
+        inset -4px -4px 0 0 rgba(0,0,0,.35),
+        6px 6px 0 0 rgba(0,0,0,.4);
+}
+
+/* Every decorative PNG shares the exact same canvas,
+   so each one simply fills its positioned ancestor
+   completely and everything lines up without extra
+   math (works whether it's a direct child of .stage,
+   like the background layers, or nested inside the
+   take-photo button). */
+.layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* =====================================================
+   LIVE CAMERA WINDOW
+   Positioned to match portal-grass.png's built-in
+   transparent cutout exactly (measured from its alpha
+   channel: left 17.92%, top 30.65%, width 64.07%,
+   height 46.85% of the full stage).
+===================================================== */
+
+.camera-window {
+    position: absolute;
+    left: 17.92%;
+    top: 30.65%;
+    width: 64.07%;
+    height: 46.85%;
+    border-radius: 0;
+    overflow: hidden;
+    background: #000;
+    z-index: 5;
+
+    /* Default sub-window rect (frame1.png) — frames.js
+       overrides these per selected frame so the live
+       video lines up with that frame's own cutout. */
+    --cam-left: 5.86%;
+    --cam-top: 5.52%;
+    --cam-width: 88.54%;
+    --cam-height: 75.83%;
+}
+
+#camera {
+    position: absolute;
+    left: var(--cam-left);
+    top: var(--cam-top);
+    width: var(--cam-width);
+    height: var(--cam-height);
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+.frame-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.countdown {
+    position: absolute;
+    z-index: 2;
+    left: var(--cam-left);
+    top: var(--cam-top);
+    width: var(--cam-width);
+    height: var(--cam-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(40px, 12vw, 70px);
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 20px #76c442, 3px 3px 0 #000;
+    opacity: 0;
+    transform: scale(0.6);
+    pointer-events: none;
+}
+
+.countdown.show {
+    animation: countPop 1s ease;
+}
+
+@keyframes countPop {
+    0%   { opacity: 0; transform: scale(0.5); }
+    15%  { opacity: 1; transform: scale(1.15); }
+    30%  { opacity: 1; transform: scale(1); }
+    85%  { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.9); }
+}
+
+.flash {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: #fff;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.flash.active {
+    animation: flashPop .35s ease;
+}
+
+@keyframes flashPop {
+    0%   { opacity: 0; }
+    10%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* =====================================================
+   SIGNAL STATUS
+   Small floating pill placed in the open ground area
+   between the frame's window and the take-photo button.
+===================================================== */
+
+.signal-status {
+    position: absolute;
+    left: 50%;
+    top: 79.5%;
+    transform: translateX(-50%);
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    background: var(--mc-panel);
+    border: 2px solid var(--mc-ink);
+    box-shadow: inset 2px 2px 0 0 rgba(255,255,255,.4), inset -2px -2px 0 0 rgba(0,0,0,.3);
+    font-family: 'Silkscreen', monospace;
+    font-size: clamp(10px, 2.6vw, 13px);
+    font-weight: 700;
+    color: var(--mc-ink);
+    text-align: center;
+    white-space: nowrap;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pulse-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 0;
+    background: #ffd15c;
+    box-shadow: 0 0 0 2px var(--mc-ink);
+    animation: pulseDot 1s steps(2) infinite;
+    flex-shrink: 0;
+}
+
+@keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.5); opacity: .5; }
+}
+
+.signal-status.armed .pulse-dot {
+    background: #8bd34f;
+    box-shadow: 0 0 8px #8bd34f;
+}
+
+.signal-status.triggered {
+    border-color: #76c442;
+}
+
+.signal-status.triggered .pulse-dot {
+    background: #76c442;
+}
+
+/* =====================================================
+   TAKE PHOTO BUTTON
+   A transparent, precisely-positioned button sitting
+   directly on top of the baked-in take-photo.png artwork
+   (measured bbox: left 16.4%, top 84.2%, width 69.9%,
+   height 4.7% of the stage).
+===================================================== */
+
+.take-photo-hit-area {
+    position: absolute;
+    left: 16.4%;
+    top: 83.8%;
+    width: 69.9%;
+    height: 5.6%;
+    z-index: 6;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+.take-photo-hit-area:active {
+    background: rgba(255,255,255,.12);
+}
+
+.take-photo-hit-area:disabled {
+    pointer-events: none;
+}
+
+/* =====================================================
+   DEBUG PANEL (optional — shows the last key detected,
+   useful for identifying what signal a Bluetooth shutter
+   remote actually sends on a given phone/browser)
+===================================================== */
+
+.key-debug {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    z-index: 10;
+    padding: 6px 10px;
+    background: rgba(0,0,0,.7);
+    border: 1px solid #444;
+    border-radius: 0;
+    font-size: 11px;
+    color: #9f9;
+    font-family: monospace;
+}
+
+@media (max-width: 380px) {
+    .stage { max-width: 100%; }
+}
